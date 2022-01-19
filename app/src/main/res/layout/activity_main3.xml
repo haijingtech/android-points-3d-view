@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.example.mysurfaceview3dapplication.RgbDataView
+        android:id="@+id/mysview"
+        android:layout_width="match_parent"
+        android:layout_height="1080px"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="0dp" />
+
+    <com.example.mysurfaceview3dapplication.Points3DView
+        android:id="@+id/mySurfaceView"
+        android:layout_width="500px"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/mysview"
+        android:visibility="gone"/>
+
+    <com.example.mysurfaceview3dapplication.Points3DView
+        android:id="@+id/mySurfaceView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/mysview"
+        android:visibility="gone"
+        android:layout_toRightOf="@id/mySurfaceView" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/mySurfaceView"
+        android:visibility="invisible"
+        android:text="z轴旋转" />
+
+    <Button
+        android:id="@+id/button_a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button"
+        android:visibility="invisible"
+        android:text="z轴逆转" />
+
+    <Button
+        android:id="@+id/button0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/mySurfaceView"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/button"
+        android:visibility="invisible"
+        android:text="x轴旋转" />
+
+    <Button
+        android:id="@+id/button_b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button0"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/button"
+        android:visibility="invisible"
+        android:text="x轴逆转" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/mySurfaceView"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/button0"
+        android:text="放大"
+
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button1"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/button_b"
+        android:visibility="invisible"
+        android:text="缩小" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/mySurfaceView"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/button1"
+        android:visibility="visible"
+        android:text="可拖动" />
+
+</RelativeLayout>

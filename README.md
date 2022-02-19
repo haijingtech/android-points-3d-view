@@ -13,4 +13,4 @@ Codes are in the master branche.
 你可以放大缩小和旋转此视图。
 如果你点击视图上的点，会有一个信息板弹出来。
 
-代码件master分支。
+代码在master分支。

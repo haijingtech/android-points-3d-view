@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/mySurfaceView"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:text="z轴旋转" />
 
     <Button
@@ -43,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/button"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:text="z轴逆转" />
 
     <Button
@@ -53,7 +53,7 @@
         android:layout_above="@+id/mySurfaceView"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/button"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:text="x轴旋转" />
 
     <Button
@@ -63,7 +63,7 @@
         android:layout_above="@+id/button0"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/button"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:text="x轴逆转" />
 
     <Button
@@ -73,7 +73,7 @@
         android:layout_above="@+id/mySurfaceView"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/button0"
-        android:visibility="invisible"
+        android:visibility="visible"
 
         android:text="放大" />
 
@@ -84,7 +84,7 @@
         android:layout_above="@+id/button1"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/button_b"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:text="缩小" />
 
     <Button
@@ -95,5 +95,14 @@
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/button1"
         android:text="可拖动" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button3"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/button1"
+        android:text="连续读值" />
 
 </RelativeLayout>

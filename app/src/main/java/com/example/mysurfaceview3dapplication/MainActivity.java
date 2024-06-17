@@ -9,38 +9,51 @@ import android.graphics.ColorFilter;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
     int step=0;
     int stepRollX=0;
     int mark=0;
-    boolean ismode1=false;
+    boolean ismode1=true;
     Points3DView msv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if(mark==1){
             setContentView(R.layout.activity_main3);
         }else{
             setContentView(R.layout.activity_main);
         }
         msv=findViewById(R.id.mysview);
-        Button bt=findViewById(R.id.button);
-        bt.setOnClickListener(this);
-        Button bt0=findViewById(R.id.button0);
-        bt0.setOnClickListener(this);
-        Button bta=findViewById(R.id.button_a);
-        bta.setOnClickListener(this);
-        Button btb=findViewById(R.id.button_b);
-        btb.setOnClickListener(this);
-        Button bt1=findViewById(R.id.button1);
-        bt1.setOnClickListener(this);
-        Button bt2=findViewById(R.id.button2);
-        bt2.setOnClickListener(this);
+//        Button bt=findViewById(R.id.button);
+//        bt.setOnClickListener(this);
+//        Button bt0=findViewById(R.id.button0);
+//        bt0.setOnClickListener(this);
+//        Button bta=findViewById(R.id.button_a);
+//        bta.setOnClickListener(this);
+//        Button btb=findViewById(R.id.button_b);
+//        btb.setOnClickListener(this);
+////        Button bt1=findViewById(R.id.button1);
+////        bt1.setOnClickListener(this);
+
+        findViewById(R.id.button).setOnTouchListener(this);
+        findViewById(R.id.button0).setOnTouchListener(this);
+        findViewById(R.id.button_a).setOnTouchListener(this);
+        findViewById(R.id.button_b).setOnTouchListener(this);
+        findViewById(R.id.button1).setOnTouchListener(this);
+        findViewById(R.id.button2).setOnTouchListener(this);
+
+//        Button bt2=findViewById(R.id.button2);
+//        bt2.setOnClickListener(this);
         Button bt3=findViewById(R.id.button3);
         bt3.setOnClickListener(this);
+        findViewById(R.id.button4).setOnClickListener(this);
 
         msv.setDrawCtrl(new Points3DView.ViewCanDraw() {
             @Override
@@ -191,55 +204,81 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if(v.getId()==R.id.button){
-            //msv.doStep(step);
-            //msv.roll_Z_axis(1,true);
-            step++;
-            if(step==5){
-                step=0;
-            }
-        }
-        if(v.getId()==R.id.button_a){
-            //msv.doStep(step);
-            //msv.roll_Z_axis(0,true);
-            step++;
-            if(step==5){
-                step=0;
-            }
-        }
-        if(v.getId()==R.id.button_b){
-            //msv.doStep(step);
-            //msv.rollScreenX(0,true);
-            stepRollX++;
-            if(stepRollX==5){
-                stepRollX=0;
-            }
-        }
-        if(v.getId()==R.id.button0){
-            //msv.rollScreenX(1,true);
-            stepRollX++;
-            if(stepRollX==5){
-                stepRollX=0;
-            }
-        }
-
-        if(v.getId()==R.id.button1){
-            //msv.setShowZoomInfo(true);
-            //msv.setZoom(msv.getZoom()+0.1f);
-
-        }
-
-        if(v.getId()==R.id.button2){
-            //msv.setShowZoomInfo(true);
-            //msv.setZoom(msv.getZoom()-0.1f);
-        }
         if(v.getId()==R.id.button3){
-            //msv.draggable=!msv.draggable;
-
-            //msv.clear();
-            //msv.XYZ_Name_TextFloat(1f,0.8f,1f,0.8f,1.2f,1.2f);
-            //msv.addPoints(PointsData2.points2,0xffff0000);
-            //msv.show();
+            msv.draggable=!msv.draggable;
         }
+        if(v.getId()==R.id.button4){
+            msv.onTouchMoveMode=msv.onTouchMoveMode==0?1:0;
+        }
+    }
+
+    Runnable runnable=new Runnable() {
+        @Override
+        public void run() {
+            if(v.getId()==R.id.button1){
+                msv.setShowZoomInfo(true);
+                msv.setZoom(msv.getZoom()*1.1f);
+            }else
+            if(v.getId()==R.id.button2){
+                msv.setShowZoomInfo(true);
+                msv.setZoom(msv.getZoom()*0.9f);
+            }else
+            if(v.getId()==R.id.button){
+                //msv.doStep(step);
+                msv.roll_Z_axis(1,true);
+                step++;
+                if(step==5){
+                    step=0;
+                }
+            }else
+            if(v.getId()==R.id.button_a){
+                msv.roll_Z_axis(0,true);
+                step++;
+                if(step==5){
+                    step=0;
+                }
+            }else
+            if(v.getId()==R.id.button_b){
+                msv.rollScreenX(0,true);
+                stepRollX++;
+                if(stepRollX==5){
+                    stepRollX=0;
+                }
+            }else
+            if(v.getId()==R.id.button0){
+                msv.rollScreenX(1,true);
+                stepRollX++;
+                if(stepRollX==5){
+                    stepRollX=0;
+                }
+            }
+            handler.postDelayed(this,0);
+        }
+    };
+
+    boolean isRunning;
+    Handler handler=new Handler();
+    View v;
+    MotionEvent event;
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        this.v=v;
+        this.event=event;
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (!isRunning) {
+                    isRunning = true;
+                    handler.post(runnable);
+                }
+                return true;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                isRunning = false;
+                handler.removeCallbacks(runnable);
+                return true;
+        }
+
+
+        return true;
     }
 }

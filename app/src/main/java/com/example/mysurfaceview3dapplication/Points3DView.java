@@ -56,6 +56,7 @@ public class Points3DView extends SurfaceView implements SurfaceHolder.Callback,
     private float kz=1;
 
     boolean draggable=false;
+    public int onTouchMoveMode=0;
     int mode=0;
 
     private float zoom=1.0f;
@@ -88,6 +89,14 @@ public class Points3DView extends SurfaceView implements SurfaceHolder.Callback,
 
     public void setPointsLinkByLine(boolean pointsLinkByLine) {
         this.pointsLinkByLine = pointsLinkByLine;
+    }
+
+    public int getOnTouchMoveMode() {
+        return onTouchMoveMode;
+    }
+
+    public void setOnTouchMoveMode(int onTouchMoveMode) {
+        this.onTouchMoveMode = onTouchMoveMode;
     }
 
     public void setDraggable(boolean draggable) {
@@ -2958,59 +2967,14 @@ public class Points3DView extends SurfaceView implements SurfaceHolder.Callback,
                 float p1x=event.getX(1);
                 float p1y=event.getY(1);
                 pointerLen=Math.sqrt((p0x-p1x)*(p0x-p1x)+(p0y-p0y)*(p0y-p1y));
-
             }
         }else if(event.getAction()==MotionEvent.ACTION_DOWN){
-
-            startX=event.getX();
-            startY=event.getY();
-            if(startX/v.getWidth() < percenOfNotRollZ || startX/v.getWidth()>(1-percenOfNotRollZ)){
-                canRoll=false;
-            }else{
-                canRoll=true;
-            }
-            LastX=startX;
-            LastY=startY;
-            try{
-                double len=0;
-                drawPointInfoIndex=0;
-                if(points2D.size()>0){
-                    float rs=(startX-(points2D.get(0)[0]*zoom+zoom_trance_x))*
-                            (startX-(points2D.get(0)[0])*zoom+zoom_trance_x)
-                            +
-                            (startY-(points2D.get(0)[1]*zoom+zoom_trance_y))*
-                                    (startY-(points2D.get(0)[1]*zoom+zoom_trance_y));
-
-                    len=Math.sqrt(Math.abs(rs));
-                    if(Double.isNaN(len)){
-                        len=0;
-                    }
-                }
-                int count=0;
-                for(float[] point:points2D){
-                    float rs=(startX-(point[0]*zoom+zoom_trance_x))*
-                            (startX-(point[0]*zoom+zoom_trance_x))+
-                            (startY-(point[1]*zoom+zoom_trance_y))*
-                                    (startY-(point[1]*zoom+zoom_trance_y));
-                    double m=Math.sqrt(Math.abs(rs));
-                    if(m<len){
-                        drawPointInfoIndex=count;
-                        len=m;
-                    }
-                    count++;
-                }
-
-                if(len<150){
-                    drawPointInfo=true;
-                }else{
-                    drawPointInfo=false;
-                }
-                drawSomething();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
+            handleTouch(v,event);
         }else if(event.getAction()==MotionEvent.ACTION_MOVE) {
+            if(onTouchMoveMode==1){
+                handleTouch(v,event);
+                return true;
+            }
             if(event.getPointerCount()==2){
                 float p0x=event.getX(0);
                 float p0y=event.getY(0);
@@ -3079,15 +3043,63 @@ public class Points3DView extends SurfaceView implements SurfaceHolder.Callback,
                                 rollScreenX(1,true);
                             }
                         }
-
                     }
                 }
             } catch (Exception e) {
 
             }
         }
-
         return true;
+    }
+
+    private void handleTouch(View v,MotionEvent event){
+        startX=event.getX();
+        startY=event.getY();
+        if(startX/v.getWidth() < percenOfNotRollZ || startX/v.getWidth()>(1-percenOfNotRollZ)){
+            canRoll=false;
+        }else{
+            canRoll=true;
+        }
+        LastX=startX;
+        LastY=startY;
+        try{
+            double len=0;
+            drawPointInfoIndex=0;
+            if(points2D.size()>0){
+                float rs=(startX-(points2D.get(0)[0]*zoom+zoom_trance_x))*
+                        (startX-(points2D.get(0)[0])*zoom+zoom_trance_x)
+                        +
+                        (startY-(points2D.get(0)[1]*zoom+zoom_trance_y))*
+                                (startY-(points2D.get(0)[1]*zoom+zoom_trance_y));
+
+                len=Math.sqrt(Math.abs(rs));
+                if(Double.isNaN(len)){
+                    len=0;
+                }
+            }
+            int count=0;
+            for(float[] point:points2D){
+                float rs=(startX-(point[0]*zoom+zoom_trance_x))*
+                        (startX-(point[0]*zoom+zoom_trance_x))+
+                        (startY-(point[1]*zoom+zoom_trance_y))*
+                                (startY-(point[1]*zoom+zoom_trance_y));
+                double m=Math.sqrt(Math.abs(rs));
+                if(m<len){
+                    drawPointInfoIndex=count;
+                    len=m;
+                }
+                count++;
+            }
+
+            if(len<150){
+                drawPointInfo=true;
+            }else{
+                drawPointInfo=false;
+            }
+            drawSomething();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     interface XYZ_To_Value{

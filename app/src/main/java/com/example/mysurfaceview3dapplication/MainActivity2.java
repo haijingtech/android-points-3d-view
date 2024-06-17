@@ -74,8 +74,6 @@ public class MainActivity2 extends Activity {
 
     //避免跳转到其它浏览器
     class MyWebViewClient extends WebViewClient {
-
-
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
         // TODO Auto-generated method stub
